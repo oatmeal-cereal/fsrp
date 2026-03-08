@@ -1,0 +1,1182 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Fore(skin role)play</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta charset="UTF-8">
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            align-items: center;
+            justify-content: center;
+            font-family: Arial, Helvetica, sans-serif;
+            overflow: hidden;
+        }
+        .game_container { 
+            /*image-rendering: pixelated;*/
+            background-color: lightblue;
+            width: 3000px;
+            height: 3000px;
+            z-index: 1;
+            position: absolute;
+        }
+        .circle {
+            border-radius: 50%;
+        }
+        label {
+            display: block;
+        }
+        @media screen and (min-width: 800px) {
+            .player_info {
+                position: absolute;
+                top: 60px;
+                left:0;
+                padding: 10px;
+                display: flex;
+                gap: 0.5em;
+                z-index: 5;
+            }
+        }
+        .Character {
+            position: absolute;
+            width: 120px;
+            height: 140px;
+            z-index: 2;
+        }
+        .NPC {
+            width: 120px;
+            height: 140px;
+            position: absolute;
+            z-index: 1;
+        }
+        .Character.you {
+            position: absolute;
+            z-index: 8;
+        }
+        .Character_sprite_outline {
+            background: url('fsrp_assets/cock_outline.png');
+            width: 120px;
+            height: 144px;
+            -webkit-transform: scale(0.8);
+            transform: scale(0.8);
+            top: 20px;
+            position: absolute;
+            z-index: 1;
+        }
+        .Character_sprite_mask {
+            -webkit-mask-image: url('fsrp_assets/cock_mask.png');
+            mask-image: url('fsrp_assets/cock_mask.png');
+            width: 120px;
+            height: 144px;
+            background-size: 120px 144px;
+            -webkit-transform: scale(0.8);
+            transform: scale(0.8);
+            top: 20px;
+            position: absolute;
+            z-index: 0;
+        }
+        .Character_dick {
+            z-index: 1;
+            background-color: white;
+        }
+        .Character_ball_1 {
+            z-index: 1;
+            background-color: white;
+        }
+        .Character_ball_2 {
+            z-index: 1;
+            background-color: white;
+        }
+        .Character_sprite_face {
+            background-image: url('fsrp_assets/normal_face.png');
+            width: 120px;
+            height: 120px;
+            -webkit-transform: scale(0.8);
+            transform: scale(0.8);
+            top: 36px;
+            position: absolute;
+            z-index: 2;
+        }
+        .Accessory_1 {
+            background-image: url('fsrp_assets/nothing.png');
+            width: 120px;
+            height: 144px;
+            -webkit-transform: scale(0.8);
+            transform: scale(0.8);
+            position: absolute;
+            z-index: 3;
+            top: 22px;
+        }
+        .Accessory_2 {
+            background-image: url('fsrp_assets/nothing.png');
+            width: 120px;
+            height: 144px;
+            -webkit-transform: scale(0.8);
+            transform: scale(0.8);
+            position: absolute;
+            z-index: 3;
+            top: 22px;
+        }
+        .Character_name {
+            font-size: 14px;
+            padding: 4px 6px 4px;
+            border-radius: 5px;
+            background: hsl(216, 11%, 9%, 0.7);
+            color: white;
+            font-weight: bold;
+            white-space: nowrap;
+            width: 16ch;
+            text-align: center;
+            position: absolute;
+            top: 10px;
+        }
+        .User_message {
+            position: absolute;
+            bottom: -60px;
+            color: black;
+            font-size: 14px;
+            width: 240px;
+            height: 50px;
+            overflow: hidden;
+            z-index: 2;
+            word-break: break-all;
+            user-select: none;
+        }
+        #color_picker {
+            width: 160px;
+            height: 160px;
+            border: solid 1px black;
+            display: none;
+            padding: 10px;
+            background-color: white;
+        }
+        #face_changer {
+            display: none;
+        }
+        #accessory_adder_1 {
+            display: none;
+        }
+        #accessory_adder_2 {
+            display: none;
+        }
+        .grid_item {
+            width: 60px;
+            height: 60px;
+            background-position: center;
+        }
+        .grid_item:hover {
+            background-color: #cfcfcf;
+        }
+        .options_box {
+            width: 240px;
+            height: 240px;
+            border: solid 1px black;
+            grid-template-columns: auto auto auto;
+            padding: 10px;
+            background-color: white;
+            overflow: scroll;
+        }
+        .Cream {
+            -webkit-mask-image: url('fsrp_assets/piss.png');
+            mask-image: url('fsrp_assets/piss.png');
+            position: absolute;
+            width: 120px;
+            height: 144px;
+            animation: piss_fade 10s 1;
+            background-color: white;
+        }
+        .Piss {
+            -webkit-mask-image: url('fsrp_assets/piss.png');
+            mask-image: url('fsrp_assets/piss.png');
+            position: absolute;
+            width: 120px;
+            height: 144px;
+            animation: piss_fade 10s 1;
+            background-color: rgb(255, 255, 0);
+        }
+        .Cheese {
+            background-image: url('fsrp_assets/cheese.png');
+            position: absolute;
+            width: 120px;
+            height: 144px;
+        }
+        .Coolaid {
+            top: 100px;
+            left: 300px;
+            position: absolute;
+            width: 120px;
+            height: 144px;
+            background-image: url('fsrp_assets/coolaid.png');
+        }
+        #pool {
+            top: 550px;
+            left: 600px;
+            width: 400px;
+            height: 320px;
+            position: absolute;
+        }
+        #poolbtn {
+            left: 400px;
+            top: 600px;
+            width: 120px;
+            height: 30px;
+            background-color: rgb(76, 76, 76);
+            border: 3px solid rgb(36, 36, 36);
+            color: white;
+            font-size: 16px;
+            position: absolute;
+            text-align: center;
+        }
+        #eat_cheese_btn {
+            width: 50px;
+            height: 20px;
+            position: absolute;
+            top: 50px;
+            left: 100px;
+            visibility: hidden;
+            display: none;
+            z-index: 10;
+            user-select: none;
+        }
+        .Scissors {
+            background-image: url('fsrp_assets/scissors.png');
+            width: 60px;
+            height: 60px;
+            position: absolute;
+            transform: translate(800px, 300px);
+        }
+        #super_meat_boy {
+            width: 160px;
+            height: 160px;
+            background-image: url('fsrp_assets/smb.png');
+            position: absolute;
+            transform: scale(0.8);
+        }
+        #super_meat_boy_container {
+            position: absolute;
+            top: 400px;
+            left: 1600px;
+            width: 200px;
+        }
+        #darwin {
+            width: 160px;
+            height: 240px;
+            background-image: url('fsrp_assets/darwin.png');
+            position: absolute;
+            transform: scale(0.6);
+        }
+        #darwin_container {
+            position: absolute;
+            top: 200px;
+            left: 1000px;
+            width: 200px;
+            display: none;
+        }
+        @keyframes piss_fade {
+            0% {opacity: 1;}
+            80% {opacity: 1;}
+            100% {opacity: 0;}
+        }
+        
+        #player_info_mobile {
+            position: absolute;
+            width: 85%;
+            height: 85%;
+            top: 10%;
+            left: 5%;
+            z-index: -1;
+            display: none;
+            visibility: hidden;
+            background-color: white;
+            border: 1px solid black;
+            padding: 10px;
+            overflow: scroll;
+        }
+        #character_editor_btn {
+            position: absolute;
+            display: none;
+            top: 10px;
+            left: 10px;
+            width: 80px;
+            height: 40px;
+            padding: 10px;
+            z-index: 6;
+            border: 1px solid black;
+            background-color: white;
+        }
+        @media screen and (max-width: 800px) {
+            #character_editor_btn {
+                display: block;
+            }
+            #movement_buttons {
+                display: flex;
+                bottom: 0;
+                padding: 10px;
+                position: absolute;
+            }
+            #color_picker_mobile {
+                width: 160px;
+                height: 160px;
+                border: solid 1px black;
+                display: none;
+                padding: 10px;
+                background-color: white;
+            }
+            #face_changer_mobile {
+                display: none;
+            }
+            .mv_button {
+                width: 50px;
+                height: 50px;
+                opacity: 50%;
+                font-size: 16px;
+                z-index: 2;
+                background-color: rgb(71, 71, 71);
+                text-align: center;
+                color: white;
+            }
+            .mv_button:hover {
+                background-color: rgb(34, 34, 34);
+            }
+        }
+    </style>
+</head>
+<body>
+    <h2 style="text-align:center; z-index: 2; display:block; position: absolute; left: 40%">Fore(skin role)play</h2>
+    <div class="game_container">
+        <div style="position: absolute; top: 300px; left: 2700px; font-size: 24px">the edging edge</div>
+        <div class="NPC" style="top: 70px; left: 1200px">
+            <div class="User_message">wasgud im the jizzler, im so sigma. <br> whats sigma? sigma ballz</div>
+            <div class="Character_name">the jizzler (NPC)</div>
+            <div class="Accessory_2" style="background-image: url('fsrp_assets/mini_cock.png');"></div>
+            <div class="Accessory_1" style="background-image: url('fsrp_assets/sunglasses.png');"></div>
+            <div class="Character_sprite_face"></div>
+            <div class="Character_sprite_outline"></div>
+            <div class="Character_sprite_mask">
+                <div class="Character_dick" style="width: 100px; height: 100px; top:50px; position:absolute"></div>
+                <div class="Character_ball_1 circle" style="width:45px; height: 45px; top:18px; left:14px; position:absolute"></div>
+                <div class="Character_ball_2 circle" style="width:45px; height: 45px; top:18px; left:57px; position:absolute"></div>
+            </div>
+        </div>
+        <div id="darwin_container">
+            <div id="darwin"></div>
+            <div style="position: absolute; top: 160px">you lost your ability to make cheese?!?!???</div>
+        </div>
+        <div id="super_meat_boy_container">
+            <div id="super_meat_boy"></div>
+            <div style="position: absolute; top: 100px">wanna be uncircumsized? well come to me, super meat boy!</div>
+        </div>
+        <div class="Scissors"></div>
+        <div class="Coolaid"></div>
+        <div id="pool">
+            <div style="background-color: cyan; width:400px; height: 300px; position: absolute"></div>
+            <div id="pissinpool" style="background-color: rgb(255, 255, 0); width:400px; height: 300px; position: absolute; opacity: 0"></div>
+            <div id="redpissinpool" style="background-color: rgb(255, 0, 0); width:400px; height: 300px; position: absolute; opacity: 0"></div>
+            <div style="background-image: url('fsrp_assets/swimming_pool.png'); width:400px; height: 320px; position: absolute"></div>
+        </div> 
+        <div id="poolbtn">Reset water</div>
+    </div>
+    <div id="player_info_mobile">
+        <label for="player_name_mobile">Nickname</label><br>
+        <input id="player_name_mobile" type="text" maxlength="20"/><br>
+        <div>
+            <button id="change_color_mobile" style="margin-top:18px">Change Color</button>
+        </div><br>
+        <div id="color_picker_mobile">
+            <label for="dick_color">Dick color</label>
+            <input type="color" id="dick_color" value="#ffffff">
+            <label for="ball_1_color">Left ball color</label>
+            <input type="color" id="ball_1_color" value="#ffffff">
+            <label for="ball_2_color">Right ball color</label>
+            <input type="color" id="ball_2_color" value="#ffffff">
+        </div><br>
+        <div>
+            <button id="change_face_mobile" style="margin-top:18px">Change face</button>
+        </div><br>
+        <div id="face_changer_mobile" class="options_box">
+            <div style="background-image:url(fsrp_assets/normal_face.png)" class="grid_item"></div>
+            <div style="background-image:url(fsrp_assets/happy_face.png)" class="grid_item"></div>
+            <div style="background-image:url(fsrp_assets/evil_face.png)" class="grid_item"></div>
+            <div style="background-image:url(fsrp_assets/sad_face.png)" class="grid_item"></div>
+            <div style="background-image:url(fsrp_assets/cat_face.png)" class="grid_item"></div>
+            <div style="background-image:url(fsrp_assets/evil_cat_face.png)" class="grid_item"></div>
+            <div style="background-image:url(fsrp_assets/lenny_face.png)" class="grid_item"></div>
+            <div style="background-image:url(fsrp_assets/lenny_face_left.png)" class="grid_item"></div>
+            <div style="background-image:url(fsrp_assets/sus_face.png)" class="grid_item"></div>
+            <div style="background-image:url(fsrp_assets/confused_face.png)" class="grid_item"></div>
+            <div style="background-image:url(fsrp_assets/angry_face.png)" class="grid_item"></div>
+            <div style="background-image:url(fsrp_assets/pensive_face.png)" class="grid_item"></div>
+            <div style="background-image:url(fsrp_assets/dead_face.png)" class="grid_item"></div>
+        </div>
+    </div>
+    <div id="movement_buttons">
+        <div id="left" class="mv_button"><-</div>
+        <div id="up" class="mv_button">↑</div>
+        <div id="down" class="mv_button">↓</div>
+        <div id="right" class="mv_button">-></div>
+    </div>
+    
+    <button type="button" id="character_editor_btn">Editor</button>
+    <div class="player_info">
+      <div style="display:block">
+        <div>
+            <label for="player_name">Nickname</label>
+            <input id="player_name" type="text" maxlength="20"/>
+        </div>
+      </div>
+      <div>
+        <button id="change_color" style="margin-top:18px">Change Color</button>
+      </div>
+      <div id="color_picker">
+        <label for="dick_color_mobile">Dick color</label>
+        <input type="color" id="dick_color_mobile" value="#ffffff">
+        <label for="ball_1_color_mobile">Left ball color</label>
+        <input type="color" id="ball_1_color_mobile" value="#ffffff">
+        <label for="ball_2_color_mobile">Right ball color</label>
+        <input type="color" id="ball_2_color_mobile" value="#ffffff">
+      </div>
+      <div>
+        <button id="change_face" style="margin-top:18px">Change face</button>
+      </div>
+      <div id="face_changer" class="options_box">
+        <div style="background-image:url(fsrp_assets/normal_face.png)" class="grid_item"></div>
+        <div style="background-image:url(fsrp_assets/happy_face.png)" class="grid_item"></div>
+        <div style="background-image:url(fsrp_assets/evil_face.png)" class="grid_item"></div>
+        <div style="background-image:url(fsrp_assets/sad_face.png)" class="grid_item"></div>
+        <div style="background-image:url(fsrp_assets/cat_face.png)" class="grid_item"></div>
+        <div style="background-image:url(fsrp_assets/evil_cat_face.png)" class="grid_item"></div>
+        <div style="background-image:url(fsrp_assets/lenny_face.png)" class="grid_item"></div>
+        <div style="background-image:url(fsrp_assets/lenny_face_left.png)" class="grid_item"></div>
+        <div style="background-image:url(fsrp_assets/sus_face.png)" class="grid_item"></div>
+        <div style="background-image:url(fsrp_assets/confused_face.png)" class="grid_item"></div>
+        <div style="background-image:url(fsrp_assets/angry_face.png)" class="grid_item"></div>
+        <div style="background-image:url(fsrp_assets/pensive_face.png)" class="grid_item"></div>
+        <div style="background-image:url(fsrp_assets/dead_face.png)" class="grid_item"></div>
+      </div>
+      <div>
+        <button id="add_accessory_1" style="margin-top:18px">Add accessory 1</button>
+      </div>
+      <div id="accessory_adder_1" class="options_box">
+        <div style="background-image:url(fsrp_assets/nothing.png)" class="grid_item"></div>
+        <div style="background-image:url(fsrp_assets/sunglasses.png)" class="grid_item"></div>
+        <div style="background-image:url(fsrp_assets/mini_cock.png); background-position: 50% 110%" class="grid_item"></div>
+        <div style="background-image:url(fsrp_assets/breasts.png); background-position: 50% 80%" class="grid_item"></div>
+        <div style="background-image:url(fsrp_assets/cat_ears.png); background-position: 50% 0%; background-size: 150%" class="grid_item"></div>
+        <div style="background-image:url(fsrp_assets/sprinkled_nuts.png); background-position: 50% 0%; background-size: 140%" class="grid_item"></div>
+        <div style="background-image:url(fsrp_assets/flowercrown_1.png); background-position: 50% 0%; background-size: 140%" class="grid_item"></div>
+        <div style="background-image:url(fsrp_assets/flowercrown_2.png); background-position: 50% 0%; background-size: 140%" class="grid_item"></div>
+        <div style="background-image:url(fsrp_assets/flowercrown_3.png); background-position: 50% 0%; background-size: 140%" class="grid_item"></div>
+        <div style="background-image:url(fsrp_assets/bowtie.png)" class="grid_item"></div>
+      </div>
+      <div>
+        <button id="add_accessory_2" style="margin-top:18px">Add accessory 2</button>
+      </div>
+      <div id="accessory_adder_2" class="options_box">
+        <div style="background-image:url(fsrp_assets/nothing.png)" class="grid_item"></div>
+        <div style="background-image:url(fsrp_assets/sunglasses.png)" class="grid_item"></div>
+        <div style="background-image:url(fsrp_assets/mini_cock.png); background-position: 50% 110%" class="grid_item"></div>
+        <div style="background-image:url(fsrp_assets/breasts.png); background-position: 50% 80%" class="grid_item"></div>
+        <div style="background-image:url(fsrp_assets/cat_ears.png); background-position: 50% 0%; background-size: 150%" class="grid_item"></div>
+        <div style="background-image:url(fsrp_assets/sprinkled_nuts.png); background-position: 50% 0%; background-size: 140%" class="grid_item"></div>
+        <div style="background-image:url(fsrp_assets/flowercrown_1.png); background-position: 50% 0%; background-size: 140%" class="grid_item"></div>
+        <div style="background-image:url(fsrp_assets/flowercrown_2.png); background-position: 50% 0%; background-size: 140%" class="grid_item"></div>
+        <div style="background-image:url(fsrp_assets/flowercrown_3.png); background-position: 50% 0%; background-size: 140%" class="grid_item"></div>
+      </div>
+    </div>
+    <div style="position: absolute; z-index:5; top: 120px; left: 10px">
+        <div>
+            <label for="message">Message</label>
+            <input id="message" type="text" maxlength="70" size="20"/>
+        </div><br>
+        <div>
+            <button id="piss_btn">Piss</button><br><br>
+            <button id="cream_btn">Cream</button><br><br>
+            <button id="cheese_btn">Cheese</button>
+        </div>
+    </div>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.2/firebase-app.js";
+        import { getAuth, onAuthStateChanged, signInAnonymously } from "https://www.gstatic.com/firebasejs/10.7.2/firebase-auth.js";
+        import { getDatabase, ref, set, onDisconnect, onValue, onChildAdded, onChildRemoved, update, push, remove, get, child } from "https://www.gstatic.com/firebasejs/10.7.2/firebase-database.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyC1fmS9N93VDVoOZJJdpnEQnnDZqAHZeYs",
+            authDomain: "foreskin-roleplay-8be24.firebaseapp.com",
+            databaseURL: "https://foreskin-roleplay-8be24-default-rtdb.firebaseio.com",
+            projectId: "foreskin-roleplay-8be24",
+            storageBucket: "foreskin-roleplay-8be24.appspot.com",
+            messagingSenderId: "384548765315",
+            appId: "1:384548765315:web:f3861b594598fac9d825b6",
+            measurementId: "G-P5G46DB9TS"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const database = getDatabase(app);
+
+        let playerId;
+        let playerRef;
+        let players = {};
+        let playerElements = {};
+        let pissElements = {};
+        let creamElements = {}
+        let cheeseElements = {};
+        let speed = 5;
+        let speedx = 0;
+        let speedy = 0;
+    
+        const gameContainer = document.querySelector(".game_container");
+        const playerNameInput = document.querySelector("#player_name");
+        const playerNameInputMobile = document.querySelector("#player_name_mobile");
+        const messageInput = document.querySelector("#message");
+
+        const playerColorButton = document.querySelector("#change_color");
+        const playerColorButtonMobile = document.querySelector("#change_color_mobile");
+
+        const dickColor = document.querySelector("#dick_color");
+        const ballColor1 = document.querySelector("#ball_1_color");
+        const ballColor2 = document.querySelector("#ball_2_color");
+        const dickColorMobile = document.querySelector("#dick_color_mobile");
+        const ballColor1Mobile = document.querySelector("#ball_1_color_mobile");
+        const ballColor2Mobile = document.querySelector("#ball_2_color_mobile");
+
+        const playerFaceButton = document.querySelector("#change_face");
+        const playerFaceButtonMobile = document.querySelector("#change_face_mobile");
+        const faceChanger = document.querySelector("#face_changer");
+        const faceChangerMobile = document.querySelector("#face_changer_mobile");
+
+        const addAccessoryButton1 = document.querySelector("#add_accessory_1");
+        const accessoryAdder1 = document.querySelector("#accessory_adder_1");
+        const addAccessoryButton2 = document.querySelector("#add_accessory_2");
+        const accessoryAdder2 = document.querySelector("#accessory_adder_2");
+
+        const movementButtons = document.querySelector("#movement_buttons");
+
+        const pissButton = document.querySelector("#piss_btn");
+        const creamButton = document.querySelector("#cream_btn");
+        const cheeseButton = document.querySelector("#cheese_btn");
+        var eatCheeseButton;
+
+        const characterEditorBtn = document.querySelector("#character_editor_btn");
+        const characterEditor = document.querySelector("#player_info_mobile");
+
+        const pool = gameContainer.querySelector("#pool");
+
+        var poolX = getComputedStyle(pool).left;
+        poolX = parseInt(poolX.substring(0, poolX.length - 2));
+        var poolY = getComputedStyle(pool).top;
+        poolY = parseInt(poolY.substring(0, poolY.length - 2));
+        var poolWidth = getComputedStyle(pool).width;
+        poolWidth = parseInt(poolWidth.substring(0, poolWidth.length - 2));
+        var poolHeight = getComputedStyle(pool).height;
+        poolHeight = parseInt(poolHeight.substring(0, poolHeight.length - 2));
+
+        const SMB = document.querySelector("#super_meat_boy_container");
+
+        let SMBX = getComputedStyle(SMB).left
+        SMBX = parseInt(SMBX.substring(0, SMBX.length - 2))
+        let SMBY = getComputedStyle(SMB).top
+        SMBY = parseInt(SMBY.substring(0, SMBY.length - 2))
+
+        const darwin = document.getElementById('darwin_container');
+
+        const gameWidth = 3000;
+        const gameHeight = 3000;
+        const sw = screen.width;
+        const sh = screen.height;
+
+        const allPlayersRef = ref(database, "players");
+        const allPissRef = ref(database, "piss");
+        const allCreamRef = ref(database, "cream");
+        const allCoolaidRef = ref(database, "coolaid");
+        const allCheeseRef = ref(database, "cheese");
+        const waterRef = ref(database, "poolwater");
+
+        var bleeding = false;
+    
+        function initGame() {
+            //gameContainer.style.transform = `translate(${sw/2}px, ${sh/2}px)`;
+
+            function handleKeyPress() {
+                var currentX = players[playerId].x;
+                var currentY = players[playerId].y;
+                var newX = currentX + speedx;
+                var newY = currentY + speedy;
+                
+                //move to the next space
+                if (newX >= 0 && newX <= gameWidth) {
+                    players[playerId].x = newX;
+                } else {
+                    newX = currentX;
+                }
+                if (newY >= 0 && newY <= gameHeight) {
+                    players[playerId].y = newY;
+                } else {
+                    newY = currentY;
+                }
+
+                if (newX + 60 >= 800 && newX <= 800 && newY + 140 >= 300 && newY <= 240) {
+                    update(playerRef, {
+                        height: 120
+                    });
+                    cheeseButton.style.display = 'none';
+                    darwin.style.display = 'block';
+                }
+
+                if (newX + 60 >= SMBX && newX - 60 <= SMBX && newY + 140 >= SMBY && newY <= SMBY) {
+                    update(playerRef, {
+                        height: 144
+                    });
+                    cheeseButton.style.display = 'block';
+                    darwin.style.display = 'none';
+                }
+
+                if (newX + 120 >= 300 && newX <= 420 && newY + 140 >= 100 && newY <= 240) {
+                    bleeding = true;
+                    window.setTimeout(function () {
+                        bleeding = false;
+                        update(playerRef, {
+                            bleeding: false
+                        });
+                        players[playerId].bleeding = false;
+                    }, 10000);
+                }
+                if (newX + 60 >= 400 && newX <= 480 && newY + 140 >= 600 && newY <= 500) {
+                    update(waterRef, {
+                        yellow: 0,
+                        red: 0
+                    })
+                    for (var key in cheeseElements) {
+                        var cheese = cheeseElements[key];
+                        var cheeseValues = window.getComputedStyle(cheese).transform.match(/matrix.*\((.+)\)/)[1].split(', ');
+                        var cheeseX = cheeseValues[4];
+                        var cheeseY = cheeseValues[5];
+                        var cheeseRef = ref(database, "cheese/" + key);
+                        if (cheeseX >= poolX - 60 && cheeseX - poolWidth <= poolX - 60 && cheeseY + 80 >= poolY && cheeseY - poolHeight <= poolY - 60) {
+                            remove(cheeseRef);
+                        }
+                    }
+                }
+
+                update(playerRef, {
+                    x: newX,
+                    y: newY,
+                    bleeding: bleeding
+                });
+                players[playerId].bleeding = bleeding;
+            }
+
+            setInterval(function () {
+                var currentX = players[playerId].x;
+                var currentY = players[playerId].y;
+                var eatCheeseButton = document.querySelector("#eat_cheese_btn");
+                var proximityCheese = {};
+                for (var key in cheeseElements) {
+                    var cheese = cheeseElements[key];
+                    var cheeseValues = window.getComputedStyle(cheese).transform.match(/matrix.*\((.+)\)/)[1].split(', ');
+                    var cheeseX = cheeseValues[4];
+                    var cheeseY = cheeseValues[5];
+                    var cheeseRef = ref(database, "cheese/" + key);
+                    if (currentX - 40 <= cheeseX && currentX + 40 >= cheeseX && currentY + 100 >= cheeseY && currentY - 60 <= cheeseY) {
+                        cheese.style.filter = 'drop-shadow(5px, 5px, white)';
+                        cheese.style.filter = 'drop-shadow(-5px, -5px, white)';
+                        proximityCheese[key] = cheese;
+                    }
+                }
+                if (Object.keys(proximityCheese).length > 0) {
+                    eatCheeseButton.style.visibility = 'visible';
+                    eatCheeseButton.style.display = 'block';
+                    eatCheeseButton.style.zIndex = '6';
+                } else {
+                    eatCheeseButton.style.visibility = 'hidden';
+                    eatCheeseButton.style.display = 'none';
+                    eatCheeseButton.style.zIndex = '1';
+                }
+                for (var cheese in proximityCheese) {
+                    var cheeseRef = ref(database, "cheese/" + cheese);
+                    eatCheeseButton.onclick = function () {
+                        remove(cheeseRef);
+                    };
+                }
+            }, 5);
+
+            let keysPressed = {}
+            var moveInterval
+
+            movementButtons.addEventListener("touchstart", function (e) {
+                var key = e.target.id
+                moveInterval = setInterval(moveMobile(key, true), 5);
+            })
+
+            movementButtons.addEventListener("touchend", function (e) {
+                var key = e.target.id
+                moveMobile(key, false)
+                clearInterval(moveInterval);
+            })
+
+            function moveMobile(key, moving) {
+                keysPressed[key] = moving;
+                if (key == "up") speedy = -(speed);
+                if (key == "down") speedy = speed;
+                if (key == "left") speedx = -(speed);
+                if (key == "right") speedx = speed;
+                handleKeyPress();
+                if (key != "up") speedy = 0;
+                if (key != "down") speedy = 0;
+                if (key != "left") speedx = 0;
+                if (key != "right") speedx = 0;
+            }
+
+            function move(key, moving) {
+                keysPressed[key] = moving;
+                if (keysPressed["ArrowDown"]) speedy = speed;
+                if (keysPressed["ArrowUp"]) speedy = -(speed);
+                if (keysPressed["ArrowLeft"]) speedx = -(speed);
+                if (keysPressed["ArrowRight"]) speedx = speed;
+                handleKeyPress();
+                if (!keysPressed["ArrowDown"]) speedy = 0;
+                if (!keysPressed["ArrowUp"]) speedy = 0;
+                if (!keysPressed["ArrowLeft"]) speedx = 0;
+                if (!keysPressed["ArrowRight"]) speedx = 0;
+                handleKeyPress();
+            }
+
+            window.addEventListener("keydown", function (e) {
+                var key = e.key;
+                move(key, true);
+            });
+
+            window.addEventListener("keyup", function (e) {
+                var key = e.key;
+                move(key, false);
+            })
+            
+            characterEditorBtn.addEventListener("click", function (e) {
+                if (characterEditor.style.display == "none") {
+                    characterEditor.style.display = "block";
+                    characterEditor.style.visibility = "visible";
+                    characterEditor.style.zIndex = "6";
+                } else {
+                    characterEditor.style.display = "none";
+                    characterEditor.style.visibility = "hidden";
+                    characterEditor.style.zIndex = "0";
+                }
+            })
+
+            cheeseButton.addEventListener("click", function (e) {
+                const cheeseId = push(allCheeseRef).key;
+                const cheeseRef = ref(database, "cheese/" + cheeseId);
+
+                var x = players[playerId].x + 20;
+                var y = players[playerId].y + 20;
+            
+                set(cheeseRef, {
+                    id: cheeseId,
+                    x: x,
+                    y: y
+                });
+            })
+
+            creamButton.addEventListener("click", function (e) {
+                const creamId = push(allCreamRef).key;
+                const creamRef = ref(database, "cream/" + creamId);
+
+                var x = players[playerId].x;
+                var y = players[playerId].y + 10;
+
+                if (x <= 2600) {
+                    set(creamRef, {
+                        id: creamId,
+                        x: x,
+                        y: y
+                    });
+                }
+            })
+
+            pissButton.addEventListener("click", function (e) {
+                const pissId = push(allPissRef).key;
+                const pissRef = ref(database, "piss/" + pissId);
+
+                var yellow, red;
+
+                var x = players[playerId].x;
+                var y = players[playerId].y;
+
+                var color;
+                var pisspool;
+
+                if (players[playerId].bleeding) {
+                    color = '#FF0000';
+                } else {
+                    color = '#FFFF00';
+                }
+
+                if (x + 50 >= poolX && x + 50 <= poolX + poolWidth && y + 120 >= poolY && y + 160 - poolHeight <= poolY) {
+                    pisspool = true;
+                }
+
+                if (!pisspool) {
+                    set(pissRef, {
+                        id: pissId,
+                        x: x,
+                        y: y + 10,
+                        color: color
+                    });
+                } else {
+                    get(waterRef).then((snapshot) => {
+                        yellow = snapshot.val().yellow;
+                        red = snapshot.val().red;
+                        if (players[playerId].bleeding && red < 0.5) {
+                            update(waterRef, {
+                                red: red + 0.02,
+                                yellow: yellow
+                            })
+                        } else {
+                            if (yellow < 0.5) {
+                                update(waterRef, {
+                                    red: red,
+                                    yellow: yellow + 0.02
+                                })
+                            }
+                        }
+                    })
+                }
+            })
+
+            onChildAdded(allCheeseRef, (snapshot) => {
+                const addedCheese = snapshot.val();
+                const cheeseRef = ref(database, "cheese/" + addedCheese.id);
+                const cheeseElement = document.createElement("div");
+                cheeseElement.classList.add("Cheese");
+                cheeseElements[addedCheese.id] = cheeseElement;
+
+                var x = addedCheese.x;
+                var y = addedCheese.y;
+                cheeseElement.style.transform = `translate(${x}px, ${y}px) scale(0.5)`;
+                gameContainer.append(cheeseElement);
+            })
+
+            onChildAdded(allCreamRef, (snapshot) => {
+                const addedCream = snapshot.val();
+                const creamRef = ref(database, "cream/" + addedCream.id);
+                const creamElement = document.createElement("div");
+                creamElement.classList.add("Cream");
+                creamElements[addedCream.id] = creamElement;
+
+                var x = addedCream.x;
+                var y = addedCream.y;
+                creamElement.style.transform = `translate(${x}px, ${y}px) scale(0.8)`;
+                creamElement.addEventListener("animationend", function () {
+                    remove(creamRef);
+                })
+                gameContainer.append(creamElement);
+            })
+
+            onChildAdded(allPissRef, (snapshot) => {
+                const addedPiss = snapshot.val();
+                const pissRef = ref(database, "piss/" + addedPiss.id);
+                const pissElement = document.createElement("div");
+                pissElement.classList.add("Piss");
+                pissElements[addedPiss.id] = pissElement;
+
+                var x = addedPiss.x;
+                var y = addedPiss.y;
+                pissElement.style.backgroundColor = addedPiss.color;
+                pissElement.style.transform = `translate(${x}px, ${y}px) scale(0.8)`;
+                pissElement.addEventListener("animationend", function () {
+                    remove(pissRef);
+                })
+                gameContainer.append(pissElement);
+            })
+
+            onChildRemoved(allCreamRef, (snapshot) => {
+                const removedKey = snapshot.val().id;
+                gameContainer.removeChild(creamElements[removedKey]);
+                delete creamElements[removedKey];
+            })
+
+            onChildRemoved(allPissRef, (snapshot) => {
+                const removedKey = snapshot.val().id;
+                gameContainer.removeChild(pissElements[removedKey]);
+                delete pissElements[removedKey];
+            })
+
+            onChildRemoved(allCheeseRef, (snapshot) => {
+                const removedKey = snapshot.val().id;
+                gameContainer.removeChild(cheeseElements[removedKey]);
+                delete cheeseElements[removedKey];
+            })
+        
+            onChildAdded(allPlayersRef, (snapshot) => {
+                const addedPlayer = snapshot.val();
+                const characterElement = document.createElement("div");
+                characterElement.classList.add("Character");
+                if (addedPlayer.id === playerId) {
+                    characterElement.classList.add("you");
+                }
+                characterElement.innerHTML = (`
+                    <div class="User_message"></div>
+                    <div class="Character_name"></div>
+                    <div class="Accessory_2"></div>
+                    <div class="Accessory_1"></div>
+                    <div class="Character_sprite_face"></div>
+                    <div class="Character_sprite_outline"></div>
+                    <div class="Character_sprite_mask">
+                        <div class="Character_dick" style="width: 100px; height: 100px; top:50px; position:absolute"></div>
+                        <div class="Character_ball_1 circle" style="width:45px; height: 45px; top:18px; left:14px; position:absolute"></div>
+                        <div class="Character_ball_2 circle" style="width:45px; height: 45px; top:18px; left:57px; position:absolute"></div>
+                    </div>
+                    <button id="eat_cheese_btn">Eat</button>
+                `);
+                playerElements[addedPlayer.id] = characterElement;
+                players[addedPlayer.id] = addedPlayer;
+
+                characterElement.querySelector(".Character_name").innerText = addedPlayer.name;
+                characterElement.querySelector(".Character_sprite_face").style.backgroundImage = addedPlayer.face;
+                const left = addedPlayer.x;
+                const top = addedPlayer.y ;
+                characterElement.style.transform = `translate(${left}px, ${top}px)`;
+                gameContainer.appendChild(characterElement);
+            })
+        
+            //Remove character DOM element after they leave
+            onChildRemoved(allPlayersRef, (snapshot) => {
+                const removedKey = snapshot.val().id;
+                gameContainer.removeChild(playerElements[removedKey]);
+                delete playerElements[removedKey];
+                delete players[removedKey];
+            })
+
+            onValue(waterRef, (snapshot) => {
+                var data = snapshot.val();
+                document.getElementById("pissinpool").style.opacity = data.yellow;
+                document.getElementById("redpissinpool").style.opacity = data.red;
+            })
+
+            onValue(allPlayersRef, (snapshot) => {
+                //Fires whenever a change occurs
+                snapshot.forEach((childSnapshot) => {
+                    const key = childSnapshot.key;
+                    const data = childSnapshot.val();
+                    let el = playerElements[key];
+                    el.querySelector(".Character_name").innerText = data.name;
+                    el.querySelector(".Character_sprite_face").style.backgroundImage = data.face;
+                    el.querySelector(".Character_dick").style.backgroundColor = data.dickcolor;
+                    el.querySelector(".Character_ball_1").style.backgroundColor = data.ballcolor1;
+                    el.querySelector(".Character_ball_2").style.backgroundColor = data.ballcolor2;
+                    el.querySelector(".Accessory_1").style.backgroundImage = data.accessory1;
+                    el.querySelector(".Accessory_2").style.backgroundImage = data.accessory2;
+                    el.querySelector(".User_message").innerText = data.message;
+                    el.querySelector(".Character_sprite_mask").style.height = data.height + "px";
+                    el.querySelector(".Character_sprite_outline").style.height = data.height + "px";
+                    var newX = data.x;
+                    var newY = data.y;
+                    el.style.transform = `translate(${newX}px, ${newY}px)`;
+                    if (el.className == "Character you") {
+                        gameContainer.style.transform = `translate(${-newX+(sw/2)-100}px, ${-newY+(sh/2)-100}px)`;
+                    }
+                });
+            })
+
+            accessoryAdder2.addEventListener("click", e => {
+                var acc = e.target;
+                update(playerRef, {
+                    accessory2: acc.style.backgroundImage
+                });
+            })
+
+            addAccessoryButton2.addEventListener("click", e => {
+                let accessoryadder = document.getElementById('accessory_adder_2');
+                if (accessoryadder.style.display == 'none') {
+                    accessoryadder.style.display = 'grid';
+                } else {
+                    accessoryadder.style.display = 'none'
+                }
+            })
+
+            accessoryAdder1.addEventListener("click", e => {
+                var acc = e.target;
+                update(playerRef, {
+                    accessory1: acc.style.backgroundImage
+                });
+            })
+
+            addAccessoryButton1.addEventListener("click", e => {
+                let accessoryadder = document.getElementById('accessory_adder_1');
+                if (accessoryadder.style.display == 'none') {
+                    accessoryadder.style.display = 'grid';
+                } else {
+                    accessoryadder.style.display = 'none'
+                }
+            })
+
+            faceChangerMobile.addEventListener("touchstart", e => {
+                var face = e.target;
+                update(playerRef, {
+                    face: face.style.backgroundImage
+                });
+            })
+
+            faceChanger.addEventListener("click", e => {
+                var face = e.target;
+                update(playerRef, {
+                    face: face.style.backgroundImage
+                });
+            })
+
+            playerFaceButtonMobile.addEventListener("click", () => {
+                let facechanger = document.getElementById('face_changer_mobile');
+                if (facechanger.style.display == 'none') {
+                    facechanger.style.display = 'grid';
+                } else {
+                    facechanger.style.display = 'none'
+                }
+            })
+
+            playerFaceButton.addEventListener("click", () => {
+                let facechanger = document.getElementById('face_changer');
+                if (facechanger.style.display == 'none') {
+                    facechanger.style.display = 'grid';
+                } else {
+                    facechanger.style.display = 'none'
+                }
+            })
+        
+            messageInput.addEventListener("change", (e) => {
+                const newMessage = e.target.value;
+                messageInput.value = newMessage;
+                players[playerId].message = newMessage;
+                update(playerRef, {
+                    message: newMessage
+                });
+                messageInput.value = "";
+            })
+
+            playerNameInputMobile.addEventListener("change", (e) => {
+                const newName = e.target.value;
+                playerNameInputMobile.value = newName;
+                players[playerId].name = newName;
+                update(playerRef, {
+                    name: newName
+                });
+            })
+
+            playerNameInput.addEventListener("change", (e) => {
+                const newName = e.target.value;
+                playerNameInput.value = newName;
+                players[playerId].name = newName;
+                update(playerRef, {
+                    name: newName
+                });
+            })
+
+            playerColorButtonMobile.addEventListener("click", () => {
+                let colorpicker = document.getElementById('color_picker_mobile');
+                if (colorpicker.style.display == 'none') {
+                    colorpicker.style.display = 'block';
+                } else {
+                    colorpicker.style.display = 'none';
+                }
+            })
+        
+            playerColorButton.addEventListener("click", () => {
+                let colorpicker = document.getElementById('color_picker');
+                if (colorpicker.style.display == 'none') {
+                    colorpicker.style.display = 'block';
+                } else {
+                    colorpicker.style.display = 'none';
+                }
+            })
+
+            ballColor2Mobile.addEventListener("input", () => {
+                let newColor = ballColor2Mobile.value;
+                players[playerId].color = newColor;
+                update(playerRef, {
+                    ballcolor2: newColor
+                })
+            })
+
+            ballColor1Mobile.addEventListener("input", () => {
+                let newColor = ballColor1Mobile.value;
+                players[playerId].color = newColor;
+                update(playerRef, {
+                    ballcolor1: newColor
+                })
+            })
+
+            dickColorMobile.addEventListener("input", () => {
+                let newColor = dickColorMobile.value;
+                players[playerId].color = newColor;
+                update(playerRef, {
+                    dickcolor: newColor
+                })
+            })
+
+            ballColor2.addEventListener("input", () => {
+                let newColor = ballColor2.value;
+                players[playerId].color = newColor;
+                update(playerRef, {
+                    ballcolor2: newColor
+                })
+            })
+
+            ballColor1.addEventListener("input", () => {
+                let newColor = ballColor1.value;
+                players[playerId].color = newColor;
+                update(playerRef, {
+                    ballcolor1: newColor
+                })
+            })
+
+            dickColor.addEventListener("input", () => {
+                let newColor = dickColor.value;
+                players[playerId].color = newColor;
+                update(playerRef, {
+                    dickcolor: newColor
+                })
+            })
+        }
+    
+        onAuthStateChanged(auth, user => {
+            console.log(user);
+            if (user) {
+                playerId = user.uid;
+                playerRef = ref(database, "players/" + playerId);
+            
+                set(playerRef, {
+                    id: playerId,
+                    name: "new user",
+                    dickcolor: "#ffffff",
+                    ballcolor1: "#ffffff",
+                    ballcolor2: "#ffffff",
+                    face: "url(fsrp_assets/normal_face.png)",
+                    accessory1: "url('fsrp_assets/nothing.png')",
+                    accessory2: "url('fsrp_assets/nothing.png')",
+                    message: "",
+                    x: 1000,
+                    y: 600,
+                    height: 144,
+                    bleeding: false
+                });
+            
+                onDisconnect(playerRef).remove();
+            
+                initGame();
+            } else {
+                //You're logged out.
+            }
+        });
+    
+        signInAnonymously(auth).then(() => {
+            console.log("you're in");
+        }).catch((error) => {
+            var errorCode = error.code;
+            var errorMessage = error.message;
+            console.log(errorCode, errorMessage);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,26 @@
+{
+  "rules": {
+    ".read": "auth != null",
+    ".write": false,
+    "players": {
+      "$uid": {
+        ".write": "auth != null && auth.uid == $uid"
+      }
+    },
+    "piss": {
+      ".write": "auth != null"
+    },
+    "cream": {
+      ".write": "auth != null"
+    },
+    "cheese": {
+      ".write": "auth != null"
+    },
+    "coolaid": {
+      ".read": "auth != null"
+    },
+    "poolwater": {
+      ".write": "auth != null"
+    }
+  }
+}
